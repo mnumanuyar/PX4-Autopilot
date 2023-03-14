@@ -171,9 +171,11 @@ public:
 	void getMagInnovVar(float mag_innov_var[3]) const { memcpy(mag_innov_var, _aid_src_mag.innovation_variance, sizeof(_aid_src_mag.innovation_variance)); }
 	void getMagInnovRatio(float &mag_innov_ratio) const { mag_innov_ratio = Vector3f(_aid_src_mag.test_ratio).max(); }
 
+#if defined(CONFIG_EKF2_DRAG_FUSION)
 	void getDragInnov(float drag_innov[2]) const { _drag_innov.copyTo(drag_innov); }
 	void getDragInnovVar(float drag_innov_var[2]) const { _drag_innov_var.copyTo(drag_innov_var); }
 	void getDragInnovRatio(float drag_innov_ratio[2]) const { _drag_test_ratio.copyTo(drag_innov_ratio); }
+#endif // CONFIG_EKF2_DRAG_FUSION
 
 	void getAirspeedInnov(float &airspeed_innov) const { airspeed_innov = _aid_src_airspeed.innovation; }
 	void getAirspeedInnovVar(float &airspeed_innov_var) const { airspeed_innov_var = _aid_src_airspeed.innovation_variance; }
@@ -537,8 +539,10 @@ private:
 	Vector3f _delta_angle_bias_var_accum{};	///< kahan summation algorithm accumulator for delta angle bias variance
 	Vector3f _delta_vel_bias_var_accum{};   ///< kahan summation algorithm accumulator for delta velocity bias variance
 
+#if defined(CONFIG_EKF2_DRAG_FUSION)
 	Vector2f _drag_innov{};		///< multirotor drag measurement innovation (m/sec**2)
 	Vector2f _drag_innov_var{};	///< multirotor drag measurement innovation variance ((m/sec**2)**2)
+#endif // CONFIG_EKF2_DRAG_FUSION
 
 	float _hagl_innov{0.0f};		///< innovation of the last height above terrain measurement (m)
 	float _hagl_innov_var{0.0f};		///< innovation variance for the last height above terrain measurement (m**2)
@@ -914,8 +918,10 @@ private:
 	// control fusion of synthetic sideslip observations
 	void controlBetaFusion(const imuSample &imu_delayed);
 
+#if defined(CONFIG_EKF2_DRAG_FUSION)
 	// control fusion of multi-rotor drag specific force observations
 	void controlDragFusion();
+#endif // CONFIG_EKF2_DRAG_FUSION
 
 	// control fusion of fake position observations to constrain drift
 	void controlFakePosFusion();
