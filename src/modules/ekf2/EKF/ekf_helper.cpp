@@ -619,6 +619,8 @@ void Ekf::get_innovation_test_status(uint16_t &status, float &mag, float &vel, f
 	status = _innov_check_fail_status.value;
 
 	// return the largest magnetometer innovation test ratio
+	mag = NAN;
+
 	if (_control_status.flags.mag_hdg) {
 		mag = sqrtf(_aid_src_mag_heading.test_ratio);
 
@@ -626,10 +628,9 @@ void Ekf::get_innovation_test_status(uint16_t &status, float &mag, float &vel, f
 		mag = sqrtf(Vector3f(_aid_src_mag.test_ratio).max());
 
 	} else if (_control_status.flags.gps_yaw) {
+#if defined(CONFIG_EKF2_GNSS_YAW)
 		mag = sqrtf(_aid_src_gnss_yaw.test_ratio);
-
-	} else {
-		mag = NAN;
+#endif // CONFIG_EKF2_GNSS_YAW
 	}
 
 	// return the largest velocity and position innovation test ratio
