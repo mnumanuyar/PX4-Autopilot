@@ -42,11 +42,6 @@ list(APPEND SRCS
 	ekf_helper.cpp
 	EKFGSF_yaw.cpp
 	estimator_interface.cpp
-	ev_control.cpp
-	ev_height_control.cpp
-	ev_pos_control.cpp
-	ev_vel_control.cpp
-	ev_yaw_control.cpp
 	fake_height_control.cpp
 	fake_pos_control.cpp
 	gnss_height_control.cpp
@@ -76,6 +71,17 @@ endif()
 if(CONFIG_EKF2_DRAG_FUSION)
 	list(APPEND SRCS drag_fusion.cpp)
 endif()
+
+if(CONFIG_EKF2_EXTERNAL_VISION)
+	list(APPEND EKF_SRCS
+		ev_control.cpp
+		ev_height_control.cpp
+		ev_pos_control.cpp
+		ev_vel_control.cpp
+		ev_yaw_control.cpp
+	)
+endif()
+
 
 if(CONFIG_EKF2_GNSS_YAW)
 	list(APPEND SRCS gps_yaw_fusion.cpp)

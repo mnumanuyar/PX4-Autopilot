@@ -297,7 +297,6 @@ struct parameters {
 	int32_t baro_ctrl{1};
 	int32_t gnss_ctrl{GnssCtrl::HPOS | GnssCtrl::VEL};
 	int32_t rng_ctrl{RngCtrl::CONDITIONAL};
-	int32_t ev_ctrl{0};
 	int32_t terrain_fusion_mode{TerrainFusionMask::TerrainFuseRangeFinder |
 				    TerrainFusionMask::TerrainFuseOpticalFlow}; ///< aiding source(s) selection bitmask for the terrain estimator
 
@@ -309,7 +308,6 @@ struct parameters {
 	float gps_delay_ms{110.0f};             ///< GPS measurement delay relative to the IMU (mSec)
 	float flow_delay_ms{5.0f};              ///< optical flow measurement delay relative to the IMU (mSec) - this is to the middle of the optical flow integration interval
 	float range_delay_ms{5.0f};             ///< range finder measurement delay relative to the IMU (mSec)
-	float ev_delay_ms{175.0f};              ///< off-board vision measurement delay relative to the IMU (mSec)
 
 	// input noise
 	float gyro_noise{1.5e-2f};              ///< IMU angular rate noise used for covariance prediction (rad/sec)
@@ -393,7 +391,11 @@ struct parameters {
 	float range_cos_max_tilt{0.7071f};      ///< cosine of the maximum tilt angle from the vertical that permits use of range finder and flow data
 	float range_kin_consistency_gate{1.0f}; ///< gate size used by the range finder kinematic consistency check
 
+#if defined(CONFIG_EKF2_EXTERNAL_VISION)
 	// vision position fusion
+	int32_t ev_ctrl{0};
+	float ev_delay_ms{175.0f};              ///< off-board vision measurement delay relative to the IMU (mSec)
+
 	float ev_vel_noise{0.1f};               ///< minimum allowed observation noise for EV velocity fusion (m/sec)
 	float ev_pos_noise{0.1f};               ///< minimum allowed observation noise for EV position fusion (m)
 	float ev_att_noise{0.1f};               ///< minimum allowed observation noise for EV attitude fusion (rad/sec)
@@ -401,6 +403,7 @@ struct parameters {
 	float ev_vel_innov_gate{3.0f};          ///< vision velocity fusion innovation consistency gate size (STD)
 	float ev_pos_innov_gate{5.0f};          ///< vision position fusion innovation consistency gate size (STD)
 	float ev_hgt_bias_nsd{0.13f};           ///< process noise for vision height bias estimation (m/s/sqrt(Hz))
+#endif // CONFIG_EKF2_EXTERNAL_VISION
 
 	// gravity fusion
 	float gravity_noise{1.0f};              ///< accelerometer measurement gaussian noise (m/s**2)
