@@ -63,7 +63,6 @@ EKF2::EKF2(bool multi_mode, const px4::wq_config_t &config, bool replay_mode):
 	_param_ekf2_mag_delay(_params->mag_delay_ms),
 	_param_ekf2_baro_delay(_params->baro_delay_ms),
 	_param_ekf2_gps_delay(_params->gps_delay_ms),
-	_param_ekf2_of_delay(_params->flow_delay_ms),
 	_param_ekf2_rng_delay(_params->range_delay_ms),
 #if defined(CONFIG_EKF2_AUXVEL)
 	_param_ekf2_avel_delay(_params->auxvel_delay_ms),
@@ -145,10 +144,16 @@ EKF2::EKF2(bool multi_mode, const px4::wq_config_t &config, bool replay_mode):
 	_param_ekf2_ev_pos_z(_params->ev_pos_body(2)),
 #endif // CONFIG_EKF2_EXTERNAL_VISION
 	_param_ekf2_grav_noise(_params->gravity_noise),
+#if defined(CONFIG_EKF2_OPTICAL_FLOW)
+	_param_ekf2_of_delay(_params->flow_delay_ms),
 	_param_ekf2_of_n_min(_params->flow_noise),
 	_param_ekf2_of_n_max(_params->flow_noise_qual_min),
 	_param_ekf2_of_qmin(_params->flow_qual_min),
 	_param_ekf2_of_gate(_params->flow_innov_gate),
+	_param_ekf2_of_pos_x(_params->flow_pos_body(0)),
+	_param_ekf2_of_pos_y(_params->flow_pos_body(1)),
+	_param_ekf2_of_pos_z(_params->flow_pos_body(2)),
+#endif // CONFIG_EKF2_OPTICAL_FLOW
 	_param_ekf2_imu_pos_x(_params->imu_pos_body(0)),
 	_param_ekf2_imu_pos_y(_params->imu_pos_body(1)),
 	_param_ekf2_imu_pos_z(_params->imu_pos_body(2)),
@@ -158,9 +163,6 @@ EKF2::EKF2(bool multi_mode, const px4::wq_config_t &config, bool replay_mode):
 	_param_ekf2_rng_pos_x(_params->rng_pos_body(0)),
 	_param_ekf2_rng_pos_y(_params->rng_pos_body(1)),
 	_param_ekf2_rng_pos_z(_params->rng_pos_body(2)),
-	_param_ekf2_of_pos_x(_params->flow_pos_body(0)),
-	_param_ekf2_of_pos_y(_params->flow_pos_body(1)),
-	_param_ekf2_of_pos_z(_params->flow_pos_body(2)),
 	_param_ekf2_gbias_init(_params->switch_on_gyro_bias),
 	_param_ekf2_abias_init(_params->switch_on_accel_bias),
 	_param_ekf2_angerr_init(_params->initial_tilt_err),

@@ -52,8 +52,6 @@ list(APPEND SRCS
 	imu_down_sampler.cpp
 	mag_control.cpp
 	mag_fusion.cpp
-	optical_flow_control.cpp
-	optflow_fusion.cpp
 	output_predictor.cpp
 	range_finder_consistency_check.cpp
 	range_height_control.cpp
@@ -73,7 +71,7 @@ if(CONFIG_EKF2_DRAG_FUSION)
 endif()
 
 if(CONFIG_EKF2_EXTERNAL_VISION)
-	list(APPEND EKF_SRCS
+	list(APPEND SRCS
 		ev_control.cpp
 		ev_height_control.cpp
 		ev_pos_control.cpp
@@ -82,9 +80,15 @@ if(CONFIG_EKF2_EXTERNAL_VISION)
 	)
 endif()
 
-
 if(CONFIG_EKF2_GNSS_YAW)
 	list(APPEND SRCS gps_yaw_fusion.cpp)
+endif()
+
+if(CONFIG_EKF2_OPTICAL_FLOW)
+	list(APPEND SRCS
+		optical_flow_control.cpp
+		optflow_fusion.cpp
+	)
 endif()
 
 if(CONFIG_EKF2_SIDESLIP)
