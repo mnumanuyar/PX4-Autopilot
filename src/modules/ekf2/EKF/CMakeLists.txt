@@ -33,7 +33,6 @@
 
 set(SRCS)
 list(APPEND SRCS
-	airspeed_fusion.cpp
 	auxvel_fusion.cpp
 	baro_height_control.cpp
 	bias_estimator.cpp
@@ -64,12 +63,15 @@ list(APPEND SRCS
 	range_finder_consistency_check.cpp
 	range_height_control.cpp
 	sensor_range_finder.cpp
-	sideslip_fusion.cpp
 	terrain_estimator.cpp
 	vel_pos_fusion.cpp
 	zero_innovation_heading_update.cpp
 	zero_velocity_update.cpp
 )
+
+if(CONFIG_EKF2_AIRSPEED)
+	list(APPEND SRCS airspeed_fusion.cpp)
+endif()
 
 if(CONFIG_EKF2_DRAG_FUSION)
 	list(APPEND SRCS drag_fusion.cpp)
@@ -77,6 +79,10 @@ endif()
 
 if(CONFIG_EKF2_GNSS_YAW)
 	list(APPEND SRCS gps_yaw_fusion.cpp)
+endif()
+
+if(CONFIG_EKF2_SIDESLIP)
+	list(APPEND SRCS sideslip_fusion.cpp)
 endif()
 
 add_library(ecl_EKF
